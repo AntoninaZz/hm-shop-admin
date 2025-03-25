@@ -22,19 +22,21 @@ const TopBar = () => {
         ))}
       </div>
       <div className='flex gap-4 items-center'>
-      <MenuIcon className='cursor-pointer md:hidden' onClick={() => { setDropdownMenu(!dropdownMenu); }} />
-            {
-                dropdownMenu && (
-                    <div className='absolute top-10 right-0 flex flex-col gap-8 p-5 bg-white shadow-xl rounded-md md:hidden'>
-                        {navLinks.map((link, i) => (
-                            <Link key={i} href={link.url} className='flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200'>
-                                {link.icon}
-                                <p>{link.label}</p>
-                            </Link>
-                        ))}
-                    </div>
-                )
-            }
+        <div className='relative'>
+          <MenuIcon className='cursor-pointer md:hidden' onClick={() => { setDropdownMenu(!dropdownMenu); }} />
+          {
+            dropdownMenu && (
+              <div className='absolute top-10 right-0 flex flex-col gap-8 p-5 bg-white shadow-xl rounded-md md:hidden'>
+                {navLinks.map((link, i) => (
+                  <Link key={i} href={link.url} className='flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200'>
+                    {link.icon}
+                    <p>{link.label}</p>
+                  </Link>
+                ))}
+              </div>
+            )
+          }
+        </div>
         <UserButton />
       </div>
     </div>
