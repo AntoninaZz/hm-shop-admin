@@ -1,8 +1,43 @@
-import React from 'react'
+"use client";
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { UserButton } from '@clerk/nextjs';
+import { MenuIcon } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+
+import { navLinks } from '@/lib/constants';
 
 const TopBar = () => {
+  const [dropdownMenu, setDropdownMenu] = useState(false);
+  const path = usePathname();
   return (
-    <div>TopBar</div>
+    <div className='sticky top-0 z-2 w-full flex justify-between items-center px-8 py-4 bg-[var(--color-milk)] lg:hidden'>
+      <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
+      <div className='flex gap-8 max-md:hidden'>
+        {navLinks.map((link, i) => (
+          <Link key={i} href={link.url} className={`flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200 ${path === link.url ? 'border-b-2' : ''}`}>
+            <p>{link.label}</p>
+          </Link>
+        ))}
+      </div>
+      <div className='flex gap-4 items-center'>
+      <MenuIcon className='cursor-pointer md:hidden' onClick={() => { setDropdownMenu(!dropdownMenu); }} />
+            {
+                dropdownMenu && (
+                    <div className='absolute top-10 right-0 flex flex-col gap-8 p-5 bg-white shadow-xl rounded-md md:hidden'>
+                        {navLinks.map((link, i) => (
+                            <Link key={i} href={link.url} className='flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200'>
+                                {link.icon}
+                                <p>{link.label}</p>
+                            </Link>
+                        ))}
+                    </div>
+                )
+            }
+        <UserButton />
+      </div>
+    </div>
   )
 }
 
