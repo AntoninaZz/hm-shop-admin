@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-milk: #FDF4EB;
+  --color-powder-pink: #FBD0CA;
+  --color-light-beige: #DECABF;
+  --color-muted-green: #B8C3BB;
+  --color-olive-gray: #4A5653;
 }
 
 @theme inline {
