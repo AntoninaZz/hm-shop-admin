@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HM-Shop Admin Dashboard",
+  title: "HM-Shop Admin Auth",
   description: "Admin Dashboard for managing hm-shop",
 };
 
