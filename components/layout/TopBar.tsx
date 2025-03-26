@@ -16,7 +16,7 @@ const TopBar = () => {
       <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
       <div className='flex gap-8 max-md:hidden'>
         {navLinks.map((link, i) => (
-          <Link key={i} href={link.url} className={`flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200 ${path === link.url ? 'border-b-2' : ''}`}>
+          <Link key={i} href={link.url} className={`relative flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200 ${path === link.url ? 'after:w-[140%] after:absolute after:top-16 after:left-[50%] after:-translate-x-1/2 after:border-b-2' : ''}`}>
             <p>{link.label}</p>
           </Link>
         ))}
@@ -26,9 +26,9 @@ const TopBar = () => {
           <MenuIcon className='cursor-pointer md:hidden' onClick={() => { setDropdownMenu(!dropdownMenu); }} />
           {
             dropdownMenu && (
-              <div className='absolute top-10 right-0 flex flex-col gap-8 p-5 bg-white shadow-xl rounded-md md:hidden'>
+              <div className='absolute top-10 right-0 flex flex-col gap-8 py-3 bg-white shadow-xl rounded-md md:hidden'>
                 {navLinks.map((link, i) => (
-                  <Link key={i} href={link.url} className='flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200'>
+                  <Link key={i} href={link.url} className={`flex gap-4 px-5 py-2 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200 ${path === link.url ? 'border-l-2' : ''}`}>
                     {link.icon}
                     <p>{link.label}</p>
                   </Link>
