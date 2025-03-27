@@ -1,10 +1,15 @@
-import {LayoutDashboard, ShoppingBag, Tag, UsersRound} from 'lucide-react';
+import {Folders, LayoutDashboard, ShoppingBag, Tag, UsersRound} from 'lucide-react';
 
 export const navLinks = [
     {
         url: "/",
         icon: <LayoutDashboard />,
         label: "Dashboard",
+    },
+    {
+        url: "/categories",
+        icon: <Folders />,
+        label: "Categories",
     },
     {
         url: "/products",
