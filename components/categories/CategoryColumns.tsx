@@ -5,9 +5,9 @@ import Delete from "../custom ui/Delete";
 
 export const columns: ColumnDef<CategoryType>[] = [
     {
-        accessorKey: "categoryName",
+        accessorKey: "name",
         header: "Category Name",
-        cell: ({row}) => <Link href={`/categories/${row.original._id}`} className="hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200">{row.original.categoryName}</Link>,
+        cell: ({row}) => <Link href={`/categories/${row.original._id}`} className="hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200">{row.original.name}</Link>,
     },
     {
         accessorKey: "products",

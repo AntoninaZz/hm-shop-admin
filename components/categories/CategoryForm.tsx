@@ -15,7 +15,7 @@ import ImageUpload from "../custom ui/ImageUpload";
 import Delete from "../custom ui/Delete";
 
 const formSchema = z.object({
-    categoryName: z.string().min(2).max(50),
+    name: z.string().min(2).max(50),
     description: z.string().min(2).max(500).trim(),
     image: z.string()
 });
@@ -31,7 +31,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ? initialData : {
-            categoryName: "",
+            name: "",
             description: "",
             image: "",
         },
@@ -76,7 +76,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
                         control={form.control}
-                        name="categoryName"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>

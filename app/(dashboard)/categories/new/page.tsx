@@ -1,12 +1,9 @@
 import CategoryForm from '@/components/categories/CategoryForm';
-import React from 'react';
 
-const CategoriesPage = () => {
+const AddCategoryPage = () => {
     return (
-        <div>
-            <CategoryForm />
-        </div>
+        <CategoryForm />
     )
 }
 
-export default CategoriesPage;
+export default AddCategoryPage;

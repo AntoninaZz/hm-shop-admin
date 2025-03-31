@@ -12,16 +12,16 @@ export const POST = async (req: NextRequest) => {
         }
         await connectToDB();
 
-        const { categoryName, description, image } = await req.json();
-        const existingCategory = await Category.findOne({ categoryName });
+        const { name, description, image } = await req.json();
+        const existingCategory = await Category.findOne({ name });
         if (existingCategory) {
             return new NextResponse("Category already exists", { status: 400 });
         }
-        if (!categoryName || !image) {
+        if (!name || !image) {
             return new NextResponse("Name and image are required", { status: 400 });
         }
         const newCategory = await Category.create({
-            categoryName,
+            name,
             description,
             image,
         });

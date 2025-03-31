@@ -39,7 +39,7 @@ const CategoriesPage = () => {
         </Button>
       </div>
       <Separator className="mt-4 mb-7 bg-[var(--color-muted-green)]" />
-      <DataTable columns={columns} data={categories} searchKey="categoryName" />
+      <DataTable columns={columns} data={categories} searchKey="name" />
     </div>
   )
 }

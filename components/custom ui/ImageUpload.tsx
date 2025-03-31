@@ -1,7 +1,6 @@
 import { CldUploadWidget } from 'next-cloudinary';
 import { CirclePlus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
-
 import { Button } from '../ui/button';
 
 interface ImageUploadProps {
@@ -25,11 +24,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, onRemove, value }) 
                                 <Trash2 className='h-4 w-4'/>
                             </Button>
                         </div>
-                        <Image src={url} alt='product' className='object-cover rounded-md' fill />
+                        <Image src={url} alt='product' className='object-cover rounded-md' fill sizes='200px'/>
                     </div>
                 )))}
             </div>
-            <CldUploadWidget uploadPreset="hm-shop-admin" onSuccess={onUpload}>
+            <CldUploadWidget uploadPreset="hm-shop-admin" onSuccess={onUpload} >
                 {({ open }) => {
                     return (
                         <Button onClick={() => open()} className='bg-[var(--color-light-beige)] text-white cursor-pointer hover:saturate-150'>

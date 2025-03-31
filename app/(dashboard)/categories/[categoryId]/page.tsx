@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/custom ui/Loader";
 import CategoryForm from "@/components/categories/CategoryForm";
 
-const CategoryDetails = ({ params }: { params: { categoryId: string } }) => {
+const CategoryDetailsPage = ({ params }: { params: { categoryId: string } }) => {
   const [loading, setLoading] = useState(true);
   const [categoryDetails, setCategoryDetails] = useState<CategoryType | null>(null);
 
@@ -29,4 +29,4 @@ const CategoryDetails = ({ params }: { params: { categoryId: string } }) => {
   )
 }
 
-export default CategoryDetails
+export default CategoryDetailsPage

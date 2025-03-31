@@ -28,11 +28,11 @@ export const POST = async (req: NextRequest, { params }: { params: { categoryId:
         if (!category) {
             return new NextResponse("Category not found", { status: 404 });
         }
-        const { categoryName, description, image } = await req.json();
-        if (!categoryName || !image) {
+        const { name, description, image } = await req.json();
+        if (!name || !image) {
             return new NextResponse("Category name and image are required", { status: 400 });
         }
-        category = await Category.findByIdAndUpdate(params.categoryId, { categoryName, description, image }, { new: true });
+        category = await Category.findByIdAndUpdate(params.categoryId, { name, description, image }, { new: true });
         await category.save();
         return NextResponse.json(category, { status: 200 });
     } catch (error) {
