@@ -17,6 +17,9 @@ type ProductType = {
     colors: [string];
     price: number;
     expense: number;
+    numberInStock: number;
+    internalMaterial: [string];
+    externalMaterial: [string];
     createdAt: Date;
     updatedAt: Date;
 }

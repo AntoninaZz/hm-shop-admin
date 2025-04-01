@@ -26,6 +26,9 @@ const formSchema = z.object({
     colors: z.array(z.string()),
     price: z.coerce.number().min(0.1),
     expense: z.coerce.number().min(0.1),
+    internalMaterial: z.array(z.string()),
+    externalMaterial: z.array(z.string()),
+    numberInStock: z.coerce.number().min(0),
 });
 
 interface ProductFormProps {
@@ -68,6 +71,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             colors: [],
             price: 0.1,
             expense: 0.1,
+            internalMaterial: [],
+            externalMaterial: [],
+            numberInStock: 1,
         },
     });
 
@@ -181,6 +187,19 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
+                            name="numberInStock"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="m-0">In Stock</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="Number in stock" {...field} onKeyDown={handleKeyPress} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="category"
                             render={({ field }) => (
                                 <FormItem>
@@ -192,24 +211,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                             value={field.value}
                                             onChange={(_id) => field.onChange([...field.value, _id])}
                                             onRemove={(idToRemove) => field.onChange([...field.value.filter((categoryId) => categoryId !== idToRemove)])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="tags"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tags</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder="Tags"
-                                            value={field.value}
-                                            onChange={(tag) => field.onChange([...field.value, tag])}
-                                            onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -246,6 +247,60 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                             value={field.value}
                                             onChange={(size) => field.onChange([...field.value, size])}
                                             onRemove={(sizeToRemove) => field.onChange([...field.value.filter((size) => size !== sizeToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="internalMaterial"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Internal Material</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="Internal Material"
+                                            value={field.value}
+                                            onChange={(material) => field.onChange([...field.value, material])}
+                                            onRemove={(materialToRemove) => field.onChange([...field.value.filter((material) => material !== materialToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="externalMaterial"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>External Material</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="External Material"
+                                            value={field.value}
+                                            onChange={(material) => field.onChange([...field.value, material])}
+                                            onRemove={(materialToRemove) => field.onChange([...field.value.filter((material) => material !== materialToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="tags"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Tags</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="Tags"
+                                            value={field.value}
+                                            onChange={(tag) => field.onChange([...field.value, tag])}
+                                            onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
                                         />
                                     </FormControl>
                                     <FormMessage />

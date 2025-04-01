@@ -36,6 +36,12 @@ const ProductSchema = new mongoose.Schema({
         get: (v: mongoose.Schema.Types.Decimal128) => { return parseFloat(v.toString()) },
         required: true,
     },
+    numberInStock: {
+        type: mongoose.Schema.Types.Int32,
+        required: true,
+    },
+    internalMaterial: [String],
+    externalMaterial: [String],
     createdAt: {
         type: Date,
         default: Date.now,
