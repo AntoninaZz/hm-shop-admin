@@ -36,7 +36,7 @@ const MultiText: React.FC<MultiTextProps> = ({ placeholder, value, onChange, onR
                 {value.map((item, i) => (
                     <Badge key={i} className="bg-[var(--color-light-beige)] text-white" >
                         {item}
-                        <button onClick={() => onRemove(item)} className="ml-1 rounded-full outline-none hover:bg-[var(--color-powder-pink)]" >
+                        <button type="button" onClick={() => onRemove(item)} className="ml-1 rounded-full outline-none hover:bg-[var(--color-powder-pink)]" >
                             <X className="h-3 w-3" />
                         </button>
                     </Badge>

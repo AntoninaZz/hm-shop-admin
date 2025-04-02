@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import Category from "@/lib/models/Category";
 import { connectToDB } from "@/lib/mongoDB";
+import Product from "@/lib/models/Product";
 
 export const GET = async (req: NextRequest, { params }: { params: { categoryId: string } }) => {
     try {
@@ -12,7 +13,7 @@ export const GET = async (req: NextRequest, { params }: { params: { categoryId: 
         }
         return NextResponse.json(category, { status: 200 });
     } catch (error) {
-        console.log("[collectionId_GET]", error);
+        console.log("[categoryId_GET]", error);
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
@@ -49,6 +50,10 @@ export const DELETE = async (req: NextRequest, { params }: { params: { categoryI
         }
         await connectToDB();
         await Category.findByIdAndDelete(params.categoryId);
+        await Product.updateMany(
+            { category: params.categoryId },
+            { $pull: { category: params.categoryId } }
+        );
         return new NextResponse("Category is deleted", { status: 200 });
     } catch (error) {
         console.log("[collectionId_DELETE]", error);

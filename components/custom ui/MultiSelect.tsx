@@ -32,7 +32,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({ placeholder, categories, valu
                     {selected.map((item) => (
                         <Badge key={item._id}>
                             {item.name}
-                            <button onClick={() => onRemove(item._id)} className="cursor-pointer ml-1 hover:text-[var(--color-powder-pink)]">
+                            <button type="button" onClick={() => onRemove(item._id)} className="cursor-pointer ml-1 hover:text-[var(--color-powder-pink)]">
                                 <X className="h-3 w-3" />
                             </button>
                         </Badge>

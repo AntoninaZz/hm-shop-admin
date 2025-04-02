@@ -6,21 +6,23 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import toast from "react-hot-toast";
 
 interface DeleteProps {
+    item: string;
     id: string;
 }
 
-const Delete: React.FC<DeleteProps> = ({ id }) => {
+const Delete: React.FC<DeleteProps> = ({ item, id }) => {
     const [loading, setLoading] = useState(false);
     const onDelete = async () => {
         try {
             setLoading(true);
-            const res = await fetch(`/api/categories/${id}`, {
+            const itemType = item === 'product' ? 'products' : 'categories';
+            const res = await fetch(`/api/${itemType}/${id}`, {
                 method: "DELETE",
             });
-            if(res.ok){
+            if (res.ok) {
                 setLoading(false);
-                window.location.href = "/categories";
-                toast.success("Category is deleted");
+                window.location.href = `/${itemType}`;
+                toast.success(`${item.charAt(0).toUpperCase() + item.slice(1)} is deleted`);
             }
         } catch (error) {
             console.log("DELETE", error);
@@ -30,7 +32,7 @@ const Delete: React.FC<DeleteProps> = ({ id }) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger>
-                <Button className="bg-[var(--color-powder-pink)] text-white cursor-pointer hover:saturate-200">
+                <Button type="button" className="bg-[var(--color-powder-pink)] text-white cursor-pointer hover:saturate-200">
                     <Trash2 className="h-4 w-4" />
                 </Button>
             </AlertDialogTrigger>
@@ -38,7 +40,7 @@ const Delete: React.FC<DeleteProps> = ({ id }) => {
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your category.
+                        This action cannot be undone. This will permanently delete your {item}.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

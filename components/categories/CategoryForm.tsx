@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -27,7 +27,6 @@ interface CategoryFormProps {
 const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const params = useParams();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ? initialData : {
@@ -46,7 +45,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             setLoading(true);
-            const url = initialData ? `/api/categories/${params.categoryId}` : "/api/categories";
+            const url = initialData ? `/api/categories/${initialData._id}` : "/api/categories";
             const res = await fetch(url, {
                 method: "POST",
                 body: JSON.stringify(values),
@@ -68,7 +67,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
             {initialData ? (
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Edit Category</h1>
-                    <Delete id={initialData._id} />
+                    <Delete item="category" id={initialData._id} />
                 </div>
             ) : (<h1 className="text-2xl font-semibold">Add Category</h1>)}
             <Separator className="mt-4 mb-7 bg-[var(--color-muted-green)]" />

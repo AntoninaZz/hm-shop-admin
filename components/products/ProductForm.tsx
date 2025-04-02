@@ -15,6 +15,7 @@ import ImageUpload from "../custom ui/ImageUpload";
 import Delete from "../custom ui/Delete";
 import MultiText from "../custom ui/MultiText";
 import MultiSelect from "../custom ui/MultiSelect";
+import Loader from "../custom ui/Loader";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -36,13 +37,12 @@ interface ProductFormProps {
 }
 
 const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
     const [categories, setCategories] = useState<CategoryType[]>([]);
 
     const getCategories = async () => {
         try {
-            setLoading(true);
             const res = await fetch("/api/categories", {
                 method: "GET",
             });
@@ -61,7 +61,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData ? initialData : {
+        defaultValues: initialData ? { ...initialData, category: initialData.category.map((category) => category._id) } : {
             name: "",
             description: "",
             media: [],
@@ -103,12 +103,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         }
     }
 
-    return (
+    return (loading ? <Loader /> :
         <div className="p-10">
             {initialData ? (
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-semibold">Edit Product</h1>
-                    <Delete id={initialData._id} />
+                    <Delete item="product" id={initialData._id} />
                 </div>
             ) : (<h1 className="text-2xl font-semibold">Add Product</h1>)}
             <Separator className="mt-4 mb-7 bg-[var(--color-muted-green)]" />
@@ -198,25 +198,27 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="category"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Category</FormLabel>
-                                    <FormControl>
-                                        <MultiSelect
-                                            placeholder="Category"
-                                            categories={categories}
-                                            value={field.value}
-                                            onChange={(_id) => field.onChange([...field.value, _id])}
-                                            onRemove={(idToRemove) => field.onChange([...field.value.filter((categoryId) => categoryId !== idToRemove)])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        {categories.length > 0 && (
+                            <FormField
+                                control={form.control}
+                                name="category"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Category</FormLabel>
+                                        <FormControl>
+                                            <MultiSelect
+                                                placeholder="Category"
+                                                categories={categories}
+                                                value={field.value}
+                                                onChange={(_id) => field.onChange([...field.value, _id])}
+                                                onRemove={(idToRemove) => field.onChange([...field.value.filter((categoryId) => categoryId !== idToRemove)])}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
                         <FormField
                             control={form.control}
                             name="colors"
