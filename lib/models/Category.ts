@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const CategorySchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -27,6 +27,6 @@ const CategorySchema = new mongoose.Schema({
     },
 });
 
-const Category = mongoose.models.Category || mongoose.model("Category", CategorySchema);
+const Category = mongoose.models.Category || mongoose.model("Category", categorySchema);
 
 export default Category;
