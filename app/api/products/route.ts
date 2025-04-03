@@ -11,7 +11,7 @@ export const POST = async (req: NextRequest) => {
             return new NextResponse("Unauthorized", { status: 401 });
         }
         await connectToDB();
-        const { name, description, media, category, tags, sizes, colors, price, expense, numberInStock, internalMaterial, externalMaterial } = await req.json();
+        const { name, description, media, category, tags, sizes, colors, price, expense, numberInStock, internalMaterial, externalMaterial, discount } = await req.json();
         if (!name || !description || !media || !category || !price || !expense || !numberInStock) {
             return new NextResponse("Not enough data to create a product", { status: 400 });
         }
@@ -28,6 +28,7 @@ export const POST = async (req: NextRequest) => {
             numberInStock,
             internalMaterial,
             externalMaterial,
+            discount,
         });
         await newProduct.save();
         if (category) {

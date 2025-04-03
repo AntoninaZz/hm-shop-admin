@@ -29,7 +29,7 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
         if (!product) {
             return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
         }
-        const { name, description, media, category, tags, sizes, colors, price, expense, numberInStock, internalMaterial, externalMaterial } = await req.json();
+        const { name, description, media, category, tags, sizes, colors, price, expense, numberInStock, internalMaterial, externalMaterial, discount } = await req.json();
         if (!name || !description || !media || !category || !price || !expense || !numberInStock) {
             return new NextResponse("Not enough data to create a product", { status: 400 });
         }
@@ -58,6 +58,7 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
             numberInStock,
             internalMaterial,
             externalMaterial,
+            discount,
         }, { new: true }).populate({ path: 'category', model: Category });
         await updatedProduct.save();
         return NextResponse.json(updatedProduct, { status: 200 });

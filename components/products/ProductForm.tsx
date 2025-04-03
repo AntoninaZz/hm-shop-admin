@@ -30,6 +30,7 @@ const formSchema = z.object({
     internalMaterial: z.array(z.string()),
     externalMaterial: z.array(z.string()),
     numberInStock: z.coerce.number().min(0),
+    discount: z.coerce.number().min(0).max(100),
 });
 
 interface ProductFormProps {
@@ -74,6 +75,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             internalMaterial: [],
             externalMaterial: [],
             numberInStock: 1,
+            discount: 0,
         },
     });
 
@@ -257,13 +259,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
-                            name="internalMaterial"
+                            name="externalMaterial"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Internal Material</FormLabel>
+                                    <FormLabel>External Material</FormLabel>
                                     <FormControl>
                                         <MultiText
-                                            placeholder="Internal Material"
+                                            placeholder="External Material"
                                             value={field.value}
                                             onChange={(material) => field.onChange([...field.value, material])}
                                             onRemove={(materialToRemove) => field.onChange([...field.value.filter((material) => material !== materialToRemove)])}
@@ -275,13 +277,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
-                            name="externalMaterial"
+                            name="internalMaterial"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>External Material</FormLabel>
+                                    <FormLabel>Internal Material</FormLabel>
                                     <FormControl>
                                         <MultiText
-                                            placeholder="External Material"
+                                            placeholder="Internal Material"
                                             value={field.value}
                                             onChange={(material) => field.onChange([...field.value, material])}
                                             onRemove={(materialToRemove) => field.onChange([...field.value.filter((material) => material !== materialToRemove)])}
@@ -304,6 +306,19 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                             onChange={(tag) => field.onChange([...field.value, tag])}
                                             onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
                                         />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="discount"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="m-0">Discount (%)</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="Discount" {...field} onKeyDown={handleKeyPress} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

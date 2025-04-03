@@ -42,6 +42,7 @@ const productSchema = new mongoose.Schema({
     },
     internalMaterial: [String],
     externalMaterial: [String],
+    discount: mongoose.Schema.Types.Int32,
     createdAt: {
         type: Date,
         default: Date.now,

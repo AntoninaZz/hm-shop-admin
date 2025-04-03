@@ -20,6 +20,7 @@ type ProductType = {
     numberInStock: number;
     internalMaterial: [string];
     externalMaterial: [string];
+    discount: number;
     createdAt: Date;
     updatedAt: Date;
 }
