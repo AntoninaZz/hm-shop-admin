@@ -6,6 +6,14 @@ type CategoryType = {
     products: ProductType[];
 }
 
+type BannerType = {
+    _id: string;
+    title: string;
+    description: string;
+    image: string;
+    url: string;
+}
+
 type ProductType = {
     _id: string;
     name: string;
