@@ -1,3 +1,5 @@
+import { string } from "zod";
+
 type CategoryType = {
     _id: string;
     name: string;
@@ -46,4 +48,11 @@ type OrderItemType = {
     color: string;
     size: string;
     quantity: number;
+}
+
+type CustomerType = {
+    clerkId: string;
+    name: string;
+    email: string;
+    phone: string;
 }
