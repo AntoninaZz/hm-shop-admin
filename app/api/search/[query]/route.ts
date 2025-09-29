@@ -10,9 +10,6 @@ export const GET = async (req: NextRequest, { params }: { params: { query: strin
                 { name: { $regex: params.query, $options: "i" } },
                 { tags: { $in: [new RegExp(params.query, "i")] } },
             ],
-        }).populate({
-            path: "category",
-            match: { name: { $regex: params.query, $options: "i" } },
         });
         console.log(searchedProducts)
         return NextResponse.json(searchedProducts, { status: 200 });
