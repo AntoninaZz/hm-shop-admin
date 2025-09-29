@@ -55,3 +55,5 @@ export const DELETE = async (req: NextRequest, { params }: { params: { bannerId:
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export const dynamic = "force-dynamic";

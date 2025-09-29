@@ -17,3 +17,4 @@ const CustomersPage = async () => {
 }
 
 export default CustomersPage;
+export const dynamic = "force-dynamic";

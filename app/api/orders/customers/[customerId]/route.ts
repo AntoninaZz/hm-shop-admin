@@ -13,3 +13,5 @@ export const GET = async (req: NextRequest, { params }: { params: { customerId: 
         return new NextResponse("Internal Server Error", { status: 500 });
     }
 }
+
+export const dynamic = "force-dynamic";
