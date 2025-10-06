@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
             return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
         }
         const { name, description, media, category, tags, sizes, colors, price, expense, numberInStock, internalMaterial, externalMaterial, discount } = await req.json();
-        if (!name || !description || !media || !category || !price || !expense || !numberInStock) {
+        if (!name || !description || !media || !category || !price || !expense) {
             return new NextResponse("Not enough data to create a product", { status: 400 });
         }
         const addedCategories = category.filter((categoryId: string) => !product.category.includes(categoryId));
