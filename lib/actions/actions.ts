@@ -7,7 +7,7 @@ export const getTotalSales = async () => {
     await connectToDB();
     const orders = await Order.find().populate({ path: "products.product", model: Product });
     const totalOrders = orders.length;
-    const totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0);
+    const totalRevenue = Math.round(orders.reduce((acc, order) => acc + order.totalAmount, 0) * 100) / 100;
     const totalExpense = orders.reduce((acc, order) => acc + order.products.reduce((acc, item) => acc + item.product.expense * item.quantity, 0), 0);
     const totalProfit = Math.round((totalRevenue - totalExpense) * 100) / 100;
     return { totalOrders, totalRevenue, totalProfit };
