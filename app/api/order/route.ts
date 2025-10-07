@@ -1,5 +1,6 @@
 import Customer from "@/lib/models/Customer";
 import Order from "@/lib/models/Order";
+import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { ProductType } from "@/lib/types";
 import { NextRequest, NextResponse } from "next/server";
@@ -30,6 +31,16 @@ export async function POST(req: NextRequest) {
         });
 
         await connectToDB();
+
+        for (const item of orderItems) {
+            const product = await Product.findOne({ _id: item.product });
+            if (product.numberInStock < item.quantity) {
+                return new NextResponse("Not enough products in stock for ordering", { status: 400 });
+            }
+            product.numberInStock = product.numberInStock - item.quantity;
+            await product.save();
+        }
+
         const newOrder = new Order({
             customerClerkId: customerInfo.clerkId,
             products: orderItems,

@@ -6,7 +6,6 @@ import { columns } from "@/components/orderItems/OrderItemsColumns";
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
   const res = await fetch(`http://localhost:3000/api/orders/${params.orderId}`);
   const { orderDetails, customer } = await res.json();
-  console.log(orderDetails, customer);
   return (
     <div className="p-10">
       <div className="w-full flex justify-between">
