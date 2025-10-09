@@ -40,6 +40,8 @@ type OrderColumnType = {
     customer: string;
     products: number;
     totalAmount: number;
+    paymentStatus: string;
+    isSent: boolean;
     createdAt: string;
 }
 

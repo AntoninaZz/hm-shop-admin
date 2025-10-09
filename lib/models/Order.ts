@@ -20,6 +20,8 @@ const orderSchema = new mongoose.Schema({
     shippingAddress: String,
     totalAmount: Number,
     comment: String,
+    paymentStatus: String,
+    isSent: Boolean,
     createdAt: {
         type: Date,
         default: Date.now,
