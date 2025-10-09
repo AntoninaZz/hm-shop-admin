@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
+import { OrderItemType } from "@/lib/types";
 
 export const columns: ColumnDef<OrderItemType>[] = [
     {
@@ -11,6 +12,7 @@ export const columns: ColumnDef<OrderItemType>[] = [
     {
         accessorKey: "color",
         header: "Color",
+        cell: ({ row }) => <div className="flex items-center gap-3"><div className="h-3 w-3 rounded-full" style={{backgroundColor: row.original.color}}></div>{row.original.color}</div>,
     },
     {
         accessorKey: "size",

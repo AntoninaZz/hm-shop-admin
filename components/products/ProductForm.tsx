@@ -226,7 +226,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                             name="colors"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Colors</FormLabel>
+                                    <FormLabel>Colors (hex)</FormLabel>
                                     <FormControl>
                                         <MultiText
                                             placeholder="Colors"
