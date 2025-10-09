@@ -22,4 +22,27 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: str
     }
 }
 
+export const POST = async (req: NextRequest, { params }: { params: { orderId: string } }) => {
+    try {
+        await connectToDB();
+        const order = await Order.findById(params.orderId);
+        if (!order) {
+            return new NextResponse(JSON.stringify({ message: "Order not found" }), { status: 404 });
+        }
+        const { isSent } = await req.json();
+        if (isSent == undefined) {
+            return new NextResponse("Not enough data to update the order", { status: 400 });
+        }
+        if (isSent == order.isSent) {
+            return new NextResponse("Order is already up to date", { status: 200 });
+        }
+        order.isSent = isSent;
+        await order.save();
+        return NextResponse.json(order, { status: 200 });
+    } catch (error) {
+        console.log("[orderId_POST]", error);
+        return new NextResponse("Internal Server Error", { status: 500 });
+    }
+}
+
 export const dynamic = "force-dynamic";
