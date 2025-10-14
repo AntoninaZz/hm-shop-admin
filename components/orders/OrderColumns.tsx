@@ -20,6 +20,7 @@ export const columns: ColumnDef<OrderColumnType>[] = [
     {
         accessorKey: "totalAmount",
         header: "Total Amount (₴)",
+        cell: ({ row }) => row.original.totalAmount.toFixed(2),
     },
     {
         accessorKey: "paymentStatus",

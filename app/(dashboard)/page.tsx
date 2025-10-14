@@ -21,7 +21,7 @@ export default async function Home() {
             <Banknote className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
-            <p className="text-right text-lg sm:text-2xl font-bold">{totalRevenue} ₴</p>
+            <p className="text-right text-lg sm:text-2xl font-bold">{totalRevenue.toFixed(2)} ₴</p>
           </CardContent>
         </Card>
 
@@ -31,7 +31,7 @@ export default async function Home() {
             <Wallet className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
-            <p className="text-right text-lg sm:text-2xl font-bold">{totalProfit} ₴</p>
+            <p className="text-right text-lg sm:text-2xl font-bold">{totalProfit.toFixed(2)} ₴</p>
           </CardContent>
         </Card>
 
