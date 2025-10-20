@@ -325,6 +325,24 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
+                            name="tags"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Tags</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="Tags"
+                                            value={field.value}
+                                            onChange={(tag) => field.onChange([...field.value, tag])}
+                                            onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="variants"
                             render={({ field }) => (
                                 <FormItem>
@@ -367,24 +385,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                 </FormItem>
                             )}
                         /> */}
-                        <FormField
-                            control={form.control}
-                            name="tags"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Tags</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder="Tags"
-                                            value={field.value}
-                                            onChange={(tag) => field.onChange([...field.value, tag])}
-                                            onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                     </div>
                     <div className="flex gap-10">
                         <Button type="submit" className="cursor-pointer bg-[var(--color-muted-green)] text-white hover:bg-[var(--color-olive-gray)]">Submit</Button>
