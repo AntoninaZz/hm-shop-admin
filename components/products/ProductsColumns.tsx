@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import Delete from "../custom ui/Delete";
-import { ProductType } from "@/lib/types";
 
 export const columns: ColumnDef<ProductType>[] = [
     {
@@ -26,8 +25,9 @@ export const columns: ColumnDef<ProductType>[] = [
         cell: ({ row }) => row.original.expense.toFixed(2),
     },
     {
-        accessorKey: "numberInStock",
+        accessorKey: "variants",
         header: "In Stock",
+        cell: ({ row }) => row.original.variants.reduce((accumulator, variant) => accumulator + variant.numberInStock, 0),
     },
     {
         id: "actions",

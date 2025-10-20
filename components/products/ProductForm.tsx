@@ -29,7 +29,12 @@ const formSchema = z.object({
     expense: z.coerce.number().min(0.1),
     internalMaterial: z.array(z.string()),
     externalMaterial: z.array(z.string()),
-    numberInStock: z.coerce.number().min(0),
+    variants: z.array(z.object({
+        color: z.string().optional(),
+        size: z.string().optional(),
+        numberInStock: z.coerce.number().min(0),
+    })),
+    // numberInStock: z.coerce.number().min(0),
     discount: z.coerce.number().min(0).max(100),
 });
 
@@ -74,7 +79,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             expense: 0.1,
             internalMaterial: [],
             externalMaterial: [],
-            numberInStock: 1,
+            variants: initialData?.variants || [],
+            // numberInStock: 1,
             discount: 0,
         },
     });
@@ -104,6 +110,30 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             toast.error("Oops! Something went wrong :(");
         }
     }
+
+    useEffect(() => {
+        const colors = form.getValues("colors");
+        const sizes = form.getValues("sizes");
+        const variants = form.getValues("variants");
+        const newVariants: any[] = [];
+        const colorOptions = colors.length ? colors : [null];
+        const sizeOptions = sizes.length ? sizes : [null];
+        for (const color of colorOptions) {
+            for (const size of sizeOptions) {
+                const existing = variants.find(
+                    (variant) => variant.color === color && variant.size === size
+                );
+                newVariants.push({
+                    color,
+                    size,
+                    numberInStock: existing?.numberInStock ?? 0,
+                });
+            }
+        }
+        if (newVariants.length !== variants.length) {
+            form.setValue("variants", newVariants);
+        }
+    }, [form.watch("colors"), form.watch("sizes")]);
 
     return (loading ? <Loader /> :
         <div className="p-10">
@@ -189,12 +219,12 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
-                            name="numberInStock"
+                            name="discount"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="m-0">In Stock</FormLabel>
+                                    <FormLabel className="m-0">Discount (%)</FormLabel>
                                     <FormControl>
-                                        <Input type="number" placeholder="Number in stock" {...field} onKeyDown={handleKeyPress} />
+                                        <Input type="number" placeholder="Discount" {...field} onKeyDown={handleKeyPress} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -221,42 +251,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                 )}
                             />
                         )}
-                        <FormField
-                            control={form.control}
-                            name="colors"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Colors (hex)</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder="Colors"
-                                            value={field.value}
-                                            onChange={(color) => field.onChange([...field.value, color])}
-                                            onRemove={(colorToRemove) => field.onChange([...field.value.filter((color) => color !== colorToRemove)])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="sizes"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Sizes</FormLabel>
-                                    <FormControl>
-                                        <MultiText
-                                            placeholder="Sizes"
-                                            value={field.value}
-                                            onChange={(size) => field.onChange([...field.value, size])}
-                                            onRemove={(sizeToRemove) => field.onChange([...field.value.filter((size) => size !== sizeToRemove)])}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                         <FormField
                             control={form.control}
                             name="externalMaterial"
@@ -295,6 +289,86 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                         />
                         <FormField
                             control={form.control}
+                            name="colors"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Colors (hex)</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="Colors"
+                                            value={field.value}
+                                            onChange={(color) => field.onChange([...field.value, color])}
+                                            onRemove={(colorToRemove) => field.onChange([...field.value.filter((color) => color !== colorToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="sizes"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Sizes</FormLabel>
+                                    <FormControl>
+                                        <MultiText
+                                            placeholder="Sizes"
+                                            value={field.value}
+                                            onChange={(size) => field.onChange([...field.value, size])}
+                                            onRemove={(sizeToRemove) => field.onChange([...field.value.filter((size) => size !== sizeToRemove)])}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="variants"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>In Stock</FormLabel>
+                                    {field.value.map((variant, i) => (
+                                        <div key={i} className="flex gap-2 items-center">
+                                            <div className="flex gap-2 items-center w-3/8">
+                                                <div className="w-4 h-4 rounded-full border" style={{ backgroundColor: variant.color || "#ffffff", }}></div>
+                                                <span className="text-xs w-3/4 text-[var(--color-olive-gray)]">{variant.size || "—"}</span>
+                                            </div>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Number in stock"
+                                                    value={variant.numberInStock}
+                                                    min={0}
+                                                    onChange={(e) => {
+                                                        const updated = [...field.value];
+                                                        updated[i].numberInStock = Math.max(0, parseInt(e.target.value) || 0);
+                                                        field.onChange(updated);
+                                                    }}
+                                                    onKeyDown={handleKeyPress}
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    ))}
+                                </FormItem>
+                            )}
+                        />
+                        {/* <FormField
+                            control={form.control}
+                            name="numberInStock"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="m-0">In Stock</FormLabel>
+                                    <FormControl>
+                                        <Input type="number" placeholder="Number in stock" {...field} onKeyDown={handleKeyPress} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        /> */}
+                        <FormField
+                            control={form.control}
                             name="tags"
                             render={({ field }) => (
                                 <FormItem>
@@ -306,19 +380,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                                             onChange={(tag) => field.onChange([...field.value, tag])}
                                             onRemove={(tagToRemove) => field.onChange([...field.value.filter((tag) => tag !== tagToRemove)])}
                                         />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="discount"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="m-0">Discount (%)</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" placeholder="Discount" {...field} onKeyDown={handleKeyPress} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

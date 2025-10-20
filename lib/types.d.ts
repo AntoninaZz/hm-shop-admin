@@ -1,5 +1,3 @@
-import { string } from "zod";
-
 type CategoryType = {
     _id: string;
     name: string;
@@ -27,7 +25,12 @@ type ProductType = {
     colors: [string];
     price: number;
     expense: number;
-    numberInStock: number;
+    variants: {
+        color?: string;
+        size?: string;
+        numberInStock: number;
+    }[];
+    // numberInStock: number;
     internalMaterial: [string];
     externalMaterial: [string];
     discount: number;
