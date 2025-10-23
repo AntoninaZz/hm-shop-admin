@@ -50,15 +50,18 @@ const productSchema = new mongoose.Schema({
     internalMaterial: [String],
     externalMaterial: [String],
     discount: mongoose.Schema.Types.Int32,
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now,
-    },
-}, { toJSON: { getters: true } });
+    // createdAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
+    // updatedAt: {
+    //     type: Date,
+    //     default: Date.now,
+    // },
+}, {
+    toJSON: { getters: true },
+    timestamps: true,
+});
 
 const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
 
