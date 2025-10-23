@@ -1,4 +1,4 @@
-import { CldUploadWidget } from 'next-cloudinary';
+import { CldUploadWidget, type CloudinaryUploadWidgetResults } from 'next-cloudinary';
 import { CirclePlus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '../ui/button';
@@ -10,8 +10,8 @@ interface ImageUploadProps {
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, onRemove, value }) => {
-    const onUpload = (result: any) => {
-        onChange(result.info.secure_url);
+    const onUpload = (result: CloudinaryUploadWidgetResults) => {
+        if (result.info && typeof result.info !== 'string' && 'secure_url' in result.info) onChange(result.info.secure_url);
     }
 
     return (
