@@ -6,6 +6,7 @@ import { columns } from "@/components/banners/BannerColumns";
 import { DataTable } from "@/components/custom ui/DataTable";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/custom ui/Loader";
 
 const BannersPage = () => {
     const router = useRouter();
@@ -29,7 +30,7 @@ const BannersPage = () => {
         getBanners();
     }, []);
 
-    return (
+    return (loading ? <Loader /> :
         <div className="p-10">
             <div className="flex items-center justify-between">
                 <p className="text-2xl font-semibold">Banners</p>

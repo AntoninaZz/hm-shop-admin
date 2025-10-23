@@ -6,6 +6,7 @@ import { columns } from "@/components/categories/CategoryColumns";
 import { DataTable } from "@/components/custom ui/DataTable";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import Loader from "@/components/custom ui/Loader";
 
 const CategoriesPage = () => {
   const router = useRouter();
@@ -29,12 +30,12 @@ const CategoriesPage = () => {
     getCategories();
   }, []);
 
-  return (
+  return (loading ? <Loader /> :
     <div className="p-10">
       <div className="flex items-center justify-between">
         <p className="text-2xl font-semibold">Categories</p>
         <Button onClick={() => router.push("/categories/new")} className="bg-[var(--color-muted-green)] text-white cursor-pointer hover:bg-[var(--color-olive-gray)]">
-          <CirclePlus className="h-4 w-4 mr-2"/>
+          <CirclePlus className="h-4 w-4 mr-2" />
           Add Category
         </Button>
       </div>
