@@ -33,7 +33,7 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await connectToDB();
         const categories = await Category.find().sort({createdAt: "desc"});

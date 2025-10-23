@@ -21,10 +21,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onChange, onRemove, value }) 
                     <div key={i} className='relative w-[200px] h-[200px]'>
                         <div className='absolute top-2 right-2 z-1'>
                             <Button type="button" onClick={() => onRemove(url)} size="sm" className='bg-[var(--color-powder-pink)] text-white cursor-pointer hover:saturate-200'>
-                                <Trash2 className='h-4 w-4'/>
+                                <Trash2 className='h-4 w-4' />
                             </Button>
                         </div>
-                        <Image src={url} alt='product' className='object-cover rounded-md' fill sizes='200px'/>
+                        <Image src={url} alt='product' className='object-cover rounded-md' fill sizes='200px' />
                     </div>
                 )))}
             </div>

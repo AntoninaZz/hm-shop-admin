@@ -60,7 +60,7 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={onDelete} className="cursor-pointer bg-[var(--color-olive-gray)] text-white">Delete</AlertDialogAction>
+                    <AlertDialogAction onClick={onDelete} disabled={loading} className={`cursor-pointer bg-[var(--color-olive-gray)] text-white ${loading ? 'opacity-50' : ''}`}>{loading ? 'Deleting...' : 'Delete'}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

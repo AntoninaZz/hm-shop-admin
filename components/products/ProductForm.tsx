@@ -79,7 +79,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             expense: 0.1,
             internalMaterial: [],
             externalMaterial: [],
-            variants: initialData?.variants || [],
+            variants: [],
             // numberInStock: 1,
             discount: 0,
         },
@@ -115,14 +115,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         const colors = form.getValues("colors");
         const sizes = form.getValues("sizes");
         const variants = form.getValues("variants");
-        const newVariants: any[] = [];
+        const newVariants: [{ color?: string, size?: string, numberInStock: number }] = [{ color: undefined, size: undefined, numberInStock: 0 }];
         const colorOptions = colors.length ? colors : [null];
         const sizeOptions = sizes.length ? sizes : [null];
-        for (const color of colorOptions) {
-            for (const size of sizeOptions) {
+        for (const colorOption of colorOptions) {
+            for (const sizeOption of sizeOptions) {
                 const existing = variants.find(
-                    (variant) => variant.color === color && variant.size === size
+                    (variant) => variant.color === colorOption && variant.size === sizeOption
                 );
+                const color = colorOption || undefined;
+                const size = sizeOption || undefined;
                 newVariants.push({
                     color,
                     size,

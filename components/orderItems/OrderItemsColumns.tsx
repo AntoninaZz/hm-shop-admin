@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
-import { OrderItemType } from "@/lib/types";
 
 export const columns: ColumnDef<OrderItemType>[] = [
     {

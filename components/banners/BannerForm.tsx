@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import ImageUpload from "../custom ui/ImageUpload";
 import Delete from "../custom ui/Delete";
+import Loader from "../custom ui/Loader";
 
 const formSchema = z.object({
     title: z.string().min(2).max(50),
@@ -64,7 +65,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ initialData }) => {
         }
     }
 
-    return (
+    return (loading ? <Loader /> :
         <div className="p-10">
             {initialData ? (
                 <div className="flex items-center justify-between">

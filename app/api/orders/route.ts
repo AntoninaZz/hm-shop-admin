@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { format } from "date-fns";
 import { connectToDB } from "@/lib/mongoDB";
 import Order from "@/lib/models/Order";
 import Customer from "@/lib/models/Customer";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await connectToDB();
         const orders = await Order.find().sort({ createdAt: "desc" });

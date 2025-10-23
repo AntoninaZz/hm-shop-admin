@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut, } from "@/components/ui/command";
+import { Command, CommandGroup, CommandInput, CommandItem, } from "@/components/ui/command";
 import { Badge } from "../ui/badge";
 import { X } from "lucide-react";
 

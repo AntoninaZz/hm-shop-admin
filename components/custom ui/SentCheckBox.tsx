@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SquareCheck, Square } from "lucide-react";
-import { Button } from "../ui/button";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from "@/components/ui/alert-dialog";
 import toast from "react-hot-toast";
 
@@ -52,7 +51,7 @@ const SentCheckBox: React.FC<SentCheckBoxProps> = ({ id, initialData }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel className="cursor-pointer">Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={onSent} className="cursor-pointer bg-[var(--color-olive-gray)] text-white">Mark as {isSent ? 'not sent' : 'sent'}</AlertDialogAction>
+                    <AlertDialogAction onClick={onSent} disabled={loading} className={`cursor-pointer bg-[var(--color-olive-gray)] text-white ${loading ? 'opacity-50' : ''}`}>{loading ? 'Marking' : 'Mark'} as {isSent ? 'not sent' : 'sent'}{loading ? '...' : ''}</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

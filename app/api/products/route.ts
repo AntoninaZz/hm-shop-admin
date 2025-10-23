@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await connectToDB();
         const products = await Product.find().sort({ createdAt: "desc" }).populate({ path: "category", model: Category });

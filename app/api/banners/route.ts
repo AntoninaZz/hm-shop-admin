@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await connectToDB();
         const banners = await Banner.find().sort({createdAt: "desc"});

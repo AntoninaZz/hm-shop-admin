@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import ImageUpload from "../custom ui/ImageUpload";
 import Delete from "../custom ui/Delete";
+import Loader from "../custom ui/Loader";
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
@@ -62,7 +63,7 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
         }
     }
 
-    return (
+    return (loading ? <Loader /> :
         <div className="p-10">
             {initialData ? (
                 <div className="flex items-center justify-between">
