@@ -4,10 +4,16 @@ import Category from "@/lib/models/Category";
 import { connectToDB } from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 
-export const GET = async (req: NextRequest, { params }: { params: { categoryId: string } }) => {
+function getCategoryIdFromReq(req: NextRequest) {
+    const segments = req.nextUrl.pathname.split('/');
+    return segments[segments.length - 1]; // останній сегмент — categoryId
+}
+
+export const GET = async (req: NextRequest) => {
     try {
+        const categoryId = getCategoryIdFromReq(req);
         await connectToDB();
-        const category = await Category.findById(params.categoryId);
+        const category = await Category.findById(categoryId);
         if (!category) {
             return new NextResponse(JSON.stringify({ message: "Category not found" }), { status: 404 });
         }
@@ -18,14 +24,15 @@ export const GET = async (req: NextRequest, { params }: { params: { categoryId: 
     }
 }
 
-export const POST = async (req: NextRequest, { params }: { params: { categoryId: string } }) => {
+export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        const categoryId = getCategoryIdFromReq(req);
         await connectToDB();
-        let category = await Category.findById(params.categoryId);
+        let category = await Category.findById(categoryId);
         if (!category) {
             return new NextResponse("Category not found", { status: 404 });
         }
@@ -33,7 +40,7 @@ export const POST = async (req: NextRequest, { params }: { params: { categoryId:
         if (!name || !image) {
             return new NextResponse("Category name and image are required", { status: 400 });
         }
-        category = await Category.findByIdAndUpdate(params.categoryId, { name, description, image }, { new: true });
+        category = await Category.findByIdAndUpdate(categoryId, { name, description, image }, { new: true });
         await category.save();
         return NextResponse.json(category, { status: 200 });
     } catch (error) {
@@ -42,17 +49,18 @@ export const POST = async (req: NextRequest, { params }: { params: { categoryId:
     }
 }
 
-export const DELETE = async (req: NextRequest, { params }: { params: { categoryId: string } }) => {
+export const DELETE = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        const categoryId = getCategoryIdFromReq(req);
         await connectToDB();
-        await Category.findByIdAndDelete(params.categoryId);
+        await Category.findByIdAndDelete(categoryId);
         await Product.updateMany(
-            { category: params.categoryId },
-            { $pull: { category: params.categoryId } }
+            { category: categoryId },
+            { $pull: { category: categoryId } }
         );
         return new NextResponse("Category is deleted", { status: 200 });
     } catch (error) {
