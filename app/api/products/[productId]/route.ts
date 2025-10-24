@@ -4,10 +4,16 @@ import { connectToDB } from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 import Category from "@/lib/models/Category";
 
-export const GET = async (req: NextRequest, { params }: { params: { productId: string } }) => {
+function getProductIdFromReq(req: NextRequest) {
+    const segments = req.nextUrl.pathname.split('/');
+    return segments[segments.length - 1]; // останній сегмент — productId
+}
+
+export const GET = async (req: NextRequest) => {
     try {
+        const productId = getProductIdFromReq(req);
         await connectToDB();
-        const product = await Product.findById(params.productId).populate({ path: "category", model: Category });
+        const product = await Product.findById(productId).populate({ path: "category", model: Category });
         if (!product) {
             return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
         }
@@ -25,14 +31,15 @@ export const GET = async (req: NextRequest, { params }: { params: { productId: s
     }
 }
 
-export const POST = async (req: NextRequest, { params }: { params: { productId: string } }) => {
+export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        const productId = getProductIdFromReq(req);
         await connectToDB();
-        const product = await Product.findById(params.productId);
+        const product = await Product.findById(productId);
         if (!product) {
             return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
         }
@@ -75,14 +82,15 @@ export const POST = async (req: NextRequest, { params }: { params: { productId: 
     }
 }
 
-export const DELETE = async (req: NextRequest, { params }: { params: { productId: string } }) => {
+export const DELETE = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
+        const productId = getProductIdFromReq(req);
         await connectToDB();
-        const product = await Product.findById(params.productId);
+        const product = await Product.findById(productId);
         if (!product) {
             return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
         }
