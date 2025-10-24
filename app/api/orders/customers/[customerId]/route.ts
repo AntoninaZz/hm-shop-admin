@@ -3,10 +3,12 @@ import { connectToDB } from "@/lib/mongoDB";
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 
-export const GET = async (req: NextRequest, { params }: { params: { customerId: string } }) => {
+export const GET = async (req: NextRequest) => {
     try {
+        const segments = req.nextUrl.pathname.split('/');
+        const customerId = segments[segments.length - 1];
         await connectToDB();
-        const orders = await Order.find({ customerClerkId: params.customerId }).populate({ path: "products.product", model: Product });
+        const orders = await Order.find({ customerClerkId: customerId }).populate({ path: "products.product", model: Product });
         return NextResponse.json(orders, {
             status: 200,
             headers: {
