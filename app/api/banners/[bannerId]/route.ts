@@ -1,13 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Banner from "@/lib/models/Banner";
 import { connectToDB } from "@/lib/mongoDB";
 
-export const GET = async (req: NextRequest, context: { params: { bannerId: string } }) => {
+export const GET = async (req: Request, { params }: { params: { bannerId: string } }) => {
     try {
-        const { bannerId } = context.params;
         await connectToDB();
-        const banner = await Banner.findById(bannerId);
+        const banner = await Banner.findById(params.bannerId);
         if (!banner) {
             return new NextResponse(JSON.stringify({ message: "Banner not found" }), { status: 404 });
         }
@@ -18,15 +17,14 @@ export const GET = async (req: NextRequest, context: { params: { bannerId: strin
     }
 }
 
-export const POST = async (req: NextRequest, context: { params: { bannerId: string } }) => {
+export const POST = async (req: Request, { params }: { params: { bannerId: string } }) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
-        const { bannerId } = context.params;
         await connectToDB();
-        let banner = await Banner.findById(bannerId);
+        let banner = await Banner.findById(params.bannerId);
         if (!banner) {
             return new NextResponse("Banner not found", { status: 404 });
         }
@@ -34,7 +32,7 @@ export const POST = async (req: NextRequest, context: { params: { bannerId: stri
         if (!title || !image || !url) {
             return new NextResponse("Banner name, image and url are required", { status: 400 });
         }
-        banner = await Banner.findByIdAndUpdate(bannerId, { title, description, image, url }, { new: true });
+        banner = await Banner.findByIdAndUpdate(params.bannerId, { title, description, image, url }, { new: true });
         await banner.save();
         return NextResponse.json(banner, { status: 200 });
     } catch (error) {
@@ -43,15 +41,14 @@ export const POST = async (req: NextRequest, context: { params: { bannerId: stri
     }
 }
 
-export const DELETE = async (req: NextRequest, context: { params: { bannerId: string } }) => {
+export const DELETE = async (req: Request, { params }: { params: { bannerId: string } }) => {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
-        const { bannerId } = context.params;
         await connectToDB();
-        await Banner.findByIdAndDelete(bannerId);
+        await Banner.findByIdAndDelete(params.bannerId);
         return new NextResponse("Banner is deleted", { status: 200 });
     } catch (error) {
         console.log("[bannerId_DELETE]", error);
