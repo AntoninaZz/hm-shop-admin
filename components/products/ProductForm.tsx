@@ -135,7 +135,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         if (newVariants.length !== variants.length) {
             form.setValue("variants", newVariants);
         }
-    }, [form.watch("colors"), form.watch("sizes")]);
+    }, [form.watch("colors"), form.watch("sizes")]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (loading ? <Loader /> :
         <div className="p-10">
