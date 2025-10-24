@@ -4,10 +4,16 @@ import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import Customer from "@/lib/models/Customer";
 
-export const GET = async (req: NextRequest, { params }: { params: { orderId: string } }) => {
+function getOrderIdFromReq(req: NextRequest) {
+    const segments = req.nextUrl.pathname.split('/');
+    return segments[segments.length - 1]; // останній сегмент — orderId
+}
+
+export const GET = async (req: NextRequest) => {
     try {
+        const orderId = getOrderIdFromReq(req);
         await connectToDB();
-        const orderDetails = await Order.findById(params.orderId).populate({
+        const orderDetails = await Order.findById(orderId).populate({
             path: 'products.product',
             model: Product,
         });
@@ -22,10 +28,11 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: str
     }
 }
 
-export const POST = async (req: NextRequest, { params }: { params: { orderId: string } }) => {
+export const POST = async (req: NextRequest) => {
     try {
+        const orderId = getOrderIdFromReq(req);
         await connectToDB();
-        const order = await Order.findById(params.orderId);
+        const order = await Order.findById(orderId);
         if (!order) {
             return new NextResponse(JSON.stringify({ message: "Order not found" }), { status: 404 });
         }
