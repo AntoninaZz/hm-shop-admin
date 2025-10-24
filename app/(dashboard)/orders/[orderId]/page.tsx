@@ -4,8 +4,9 @@ import { DataTable } from "@/components/custom ui/DataTable";
 import { columns } from "@/components/orderItems/OrderItemsColumns";
 import SentCheckBox from "@/components/custom ui/SentCheckBox";
 
-const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
-  const res = await fetch(`http://localhost:3000/api/orders/${params.orderId}`);
+const OrderDetails = async ({ params }: { params: Promise<{ orderId: string }> }) => {
+  const { orderId } = await params;
+  const res = await fetch(`http://localhost:3000/api/orders/${orderId}`);
   const { orderDetails, customer } = await res.json();
   return (
     <div className="p-10">
