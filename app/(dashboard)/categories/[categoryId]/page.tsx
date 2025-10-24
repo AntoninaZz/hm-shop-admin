@@ -1,32 +1,6 @@
-"use client";
-import { useEffect, useState } from "react";
-import Loader from "@/components/custom ui/Loader";
-import CategoryForm from "@/components/categories/CategoryForm";
+import CategoryDetailsPage from "@/components/categories/CategoryDetailsPage";
 
-const CategoryDetailsPage = ({ params }: { params: { categoryId: string } }) => {
-  const [loading, setLoading] = useState(true);
-  const [categoryDetails, setCategoryDetails] = useState<CategoryType | null>(null);
-
-  const getCategoryDetails = async () => {
-    try {
-      const res = await fetch(`/api/categories/${params.categoryId}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      setCategoryDetails(data);
-      setLoading(false);
-    } catch (error) {
-      console.log("[categoryId_GET]", error);
-    }
-  }
-
-  useEffect(() => {
-    getCategoryDetails();
-  }, []);
-
-  return ( loading ? <Loader /> :
-    <CategoryForm initialData={categoryDetails} />
-  )
+export default async function Page({ params }: { params: Promise<{ categoryId: string }> }) {
+  const { categoryId } = await params;
+  return <CategoryDetailsPage params={{ categoryId }} />;
 }
-
-export default CategoryDetailsPage
