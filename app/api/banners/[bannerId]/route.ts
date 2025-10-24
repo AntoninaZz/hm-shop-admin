@@ -3,9 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 import Banner from "@/lib/models/Banner";
 import { connectToDB } from "@/lib/mongoDB";
 
-export async function GET(req: NextRequest, context: { params: { bannerId: string } }) {
+type BannerRouteParams = { bannerId: string };
+
+export async function GET(req: NextRequest, { params }: { params: BannerRouteParams }) {
     try {
-        const { bannerId } = context.params;
+        const { bannerId } = params;
         await connectToDB();
 
         const banner = await Banner.findById(bannerId);
@@ -20,14 +22,14 @@ export async function GET(req: NextRequest, context: { params: { bannerId: strin
     }
 }
 
-export async function POST(req: NextRequest, context: { params: { bannerId: string } }) {
+export async function POST(req: NextRequest, { params }: { params: BannerRouteParams }) {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        const { bannerId } = context.params;
+        const { bannerId } = params;
         await connectToDB();
 
         let banner = await Banner.findById(bannerId);
@@ -50,14 +52,14 @@ export async function POST(req: NextRequest, context: { params: { bannerId: stri
     }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { bannerId: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: BannerRouteParams }) {
     try {
         const { userId } = await auth();
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-        const { bannerId } = context.params;
+        const { bannerId } = params;
         await connectToDB();
 
         await Banner.findByIdAndDelete(bannerId);
