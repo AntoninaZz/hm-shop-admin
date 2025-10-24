@@ -1,9 +1,6 @@
 import BannerDetailsPage from "@/components/banners/BannerDetailsPage";
 
-interface BannerPageProps {
-    params: { bannerId: string };
-}
-
-export default function Page({ params }: BannerPageProps) {
-    return <BannerDetailsPage params={params} />;
+export default async function Page({ params }: { params: Promise<{ bannerId: string }> }) {
+  const { bannerId } = await params;
+  return <BannerDetailsPage params={{ bannerId }} />;
 }
