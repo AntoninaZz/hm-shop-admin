@@ -115,24 +115,28 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         const colors = form.getValues("colors");
         const sizes = form.getValues("sizes");
         const variants = form.getValues("variants");
-        const newVariants: [{ color?: string, size?: string, numberInStock: number }] = [{ color: undefined, size: undefined, numberInStock: 0 }];
-        const colorOptions = colors.length ? colors : [null];
-        const sizeOptions = sizes.length ? sizes : [null];
-        for (const colorOption of colorOptions) {
-            for (const sizeOption of sizeOptions) {
+        if (colors.length === 0 && sizes.length === 0) {
+            form.setValue("variants", []);
+            return;
+        }
+        const newVariants: { color?: string, size?: string, numberInStock: number }[] = [];
+        const colorOptions = colors.length ? colors : [undefined];
+        const sizeOptions = sizes.length ? sizes : [undefined];
+        for (const color of colorOptions) {
+            for (const size of sizeOptions) {
                 const existing = variants.find(
-                    (variant) => variant.color === colorOption && variant.size === sizeOption
+                    (variant) => variant.color === color && variant.size === size
                 );
-                const color = colorOption || undefined;
-                const size = sizeOption || undefined;
-                newVariants.push({
-                    color,
-                    size,
-                    numberInStock: existing?.numberInStock ?? 0,
-                });
+                if (color || size) {
+                    newVariants.push({
+                        color,
+                        size,
+                        numberInStock: existing?.numberInStock ?? 0,
+                    });
+                }
             }
         }
-        if (newVariants.length !== variants.length) {
+        if (JSON.stringify(newVariants) !== JSON.stringify(variants)) {
             form.setValue("variants", newVariants);
         }
     }, [form.watch("colors"), form.watch("sizes")]); // eslint-disable-line react-hooks/exhaustive-deps
