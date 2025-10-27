@@ -6,7 +6,7 @@ import BannerForm from "@/components/banners/BannerForm";
 
 const BannerDetailsPage = () => {
   const params = useParams();
-  const bannerId = params?.productId as string;
+  const bannerId = params?.bannerId as string;
   const [loading, setLoading] = useState(true);
   const [bannerDetails, setBannerDetails] = useState<BannerType | null>(null);
 

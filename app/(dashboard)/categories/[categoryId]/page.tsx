@@ -6,7 +6,7 @@ import CategoryForm from "@/components/categories/CategoryForm";
 
 const CategoryDetailsPage = () => {
   const params = useParams();
-  const categoryId = params?.productId as string;
+  const categoryId = params?.categoryId as string;
   const [loading, setLoading] = useState(true);
   const [categoryDetails, setCategoryDetails] = useState<CategoryType | null>(null);
 
