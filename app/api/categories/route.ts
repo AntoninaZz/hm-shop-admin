@@ -8,17 +8,17 @@ export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 403 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         await connectToDB();
 
         const { name, description, image } = await req.json();
         const existingCategory = await Category.findOne({ name });
         if (existingCategory) {
-            return new NextResponse("Category already exists", { status: 400 });
+            return NextResponse.json({ message: "Category already exists" }, { status: 400 });
         }
         if (!name || !image) {
-            return new NextResponse("Name and image are required", { status: 400 });
+            return NextResponse.json({ message: "Name and image are required" }, { status: 400 });
         }
         const newCategory = await Category.create({
             name,
@@ -29,18 +29,18 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(newCategory, { status: 200 });
     } catch (error) {
         console.log("[category_POST]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 
 export const GET = async () => {
     try {
         await connectToDB();
-        const categories = await Category.find().sort({createdAt: "desc"});
-        return NextResponse.json(categories, {status: 200});
+        const categories = await Category.find().sort({ createdAt: "desc" });
+        return NextResponse.json(categories, { status: 200 });
     } catch (error) {
         console.log("[Category_GET]", error);
-        return new NextResponse("Internal Server Error", {status: 500});
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

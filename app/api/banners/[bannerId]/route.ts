@@ -11,15 +11,18 @@ function getBannerIdFromReq(req: NextRequest) {
 export const GET = async (req: NextRequest) => {
     try {
         const bannerId = getBannerIdFromReq(req);
+        if (!bannerId || bannerId === "undefined") {
+            return NextResponse.json({ message: "Invalid banner ID" }, { status: 400 });
+        }
         await connectToDB();
         const banner = await Banner.findById(bannerId);
         if (!banner) {
-            return new NextResponse(JSON.stringify({ message: "Banner not found" }), { status: 404 });
+            return NextResponse.json({ message: "Banner not found" }, { status: 404 });
         }
         return NextResponse.json(banner, { status: 200 });
     } catch (error) {
         console.log("[bannerId_GET]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 
@@ -27,24 +30,27 @@ export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         const bannerId = getBannerIdFromReq(req);
+        if (!bannerId || bannerId === "undefined") {
+            return NextResponse.json({ message: "Invalid banner ID" }, { status: 400 });
+        }
         await connectToDB();
         let banner = await Banner.findById(bannerId);
         if (!banner) {
-            return new NextResponse("Banner not found", { status: 404 });
+            return NextResponse.json({ message: "Banner not found" }, { status: 404 });
         }
         const { title, description, image, url } = await req.json();
         if (!title || !image || !url) {
-            return new NextResponse("Banner name, image and url are required", { status: 400 });
+            return NextResponse.json({ message: "Banner name, image and url are required" }, { status: 400 });
         }
         banner = await Banner.findByIdAndUpdate(bannerId, { title, description, image, url }, { new: true });
         await banner.save();
         return NextResponse.json(banner, { status: 200 });
     } catch (error) {
         console.log("[bannerId_POST]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 
@@ -52,15 +58,18 @@ export const DELETE = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         const bannerId = getBannerIdFromReq(req);
+        if (!bannerId || bannerId === "undefined") {
+            return NextResponse.json({ message: "Invalid banner ID" }, { status: 400 });
+        }
         await connectToDB();
         await Banner.findByIdAndDelete(bannerId);
-        return new NextResponse("Banner is deleted", { status: 200 });
+        return NextResponse.json({ message: "Banner deleted" }, { status: 200 });
     } catch (error) {
         console.log("[bannerId_DELETE]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 

@@ -12,10 +12,13 @@ function getProductIdFromReq(req: NextRequest) {
 export const GET = async (req: NextRequest) => {
     try {
         const productId = getProductIdFromReq(req);
+        if (!productId || productId === "undefined") {
+            return NextResponse.json({ message: "Invalid product ID" }, { status: 400 });
+        }
         await connectToDB();
         const product = await Product.findById(productId).populate({ path: "category", model: Category });
         if (!product) {
-            return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }
         return NextResponse.json(product, {
             status: 200,
@@ -27,7 +30,7 @@ export const GET = async (req: NextRequest) => {
         });
     } catch (error) {
         console.log("[productId_GET]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 
@@ -35,17 +38,20 @@ export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         const productId = getProductIdFromReq(req);
+        if (!productId || productId === "undefined") {
+            return NextResponse.json({ message: "Invalid product ID" }, { status: 400 });
+        }
         await connectToDB();
         const product = await Product.findById(productId);
         if (!product) {
-            return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }
         const { name, description, media, category, tags, sizes, colors, price, expense, variants, internalMaterial, externalMaterial, discount } = await req.json();
         if (!name || !description || !media || !category || !price || !expense) {
-            return new NextResponse("Not enough data to create a product", { status: 400 });
+            return NextResponse.json({ message: "Not enough data to create a product" }, { status: 400 });
         }
         const addedCategories = category.filter((categoryId: string) => !product.category.includes(categoryId));
         const removedCategories = product.category.filter((categoryId: string) => !category.includes(categoryId.toString()));
@@ -78,7 +84,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(updatedProduct, { status: 200 });
     } catch (error) {
         console.log("[productId_POST]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 
@@ -86,13 +92,16 @@ export const DELETE = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         const productId = getProductIdFromReq(req);
+        if (!productId || productId === "undefined") {
+            return NextResponse.json({ message: "Invalid product ID" }, { status: 400 });
+        }
         await connectToDB();
         const product = await Product.findById(productId);
         if (!product) {
-            return new NextResponse(JSON.stringify({ message: "Product not found" }), { status: 404 });
+            return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }
         await Product.findByIdAndDelete(product._id);
         await Promise.all(
@@ -101,10 +110,10 @@ export const DELETE = async (req: NextRequest) => {
                     $pull: { products: product._id },
                 }))
         );
-        return new NextResponse("Product is deleted", { status: 200 });
+        return NextResponse.json({ message: "Product is deleted" }, { status: 200 });
     } catch (error) {
         console.log("[productId_DELETE]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Error" }, { status: 500 });
     }
 }
 

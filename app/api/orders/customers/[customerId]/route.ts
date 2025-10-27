@@ -7,6 +7,9 @@ export const GET = async (req: NextRequest) => {
     try {
         const segments = req.nextUrl.pathname.split('/');
         const customerId = segments[segments.length - 1];
+        if (!customerId || customerId === "undefined") {
+            return NextResponse.json({ message: "Invalid customer ID" }, { status: 400 });
+        }
         await connectToDB();
         const orders = await Order.find({ customerClerkId: customerId }).populate({ path: "products.product", model: Product });
         return NextResponse.json(orders, {
@@ -19,7 +22,7 @@ export const GET = async (req: NextRequest) => {
         })
     } catch (error) {
         console.log("[customerId_GET]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

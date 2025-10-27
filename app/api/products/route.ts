@@ -8,12 +8,12 @@ export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         await connectToDB();
         const { name, description, media, category, tags, sizes, colors, price, expense, variants, internalMaterial, externalMaterial, discount } = await req.json();
         if (!name || !description || !media || !category || !price || !expense || !variants) {
-            return new NextResponse("Not enough data to create a product", { status: 400 });
+            return NextResponse.json({ message: "Not enough data to create a product" }, { status: 400 });
         }
         const newProduct = await Product.create({
             name,
@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(newProduct, { status: 200 });
     } catch (error) {
         console.log("[product_POST]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 
@@ -54,7 +54,7 @@ export const GET = async () => {
         return NextResponse.json(products, { status: 200 });
     } catch (error) {
         console.log("[Products_GET]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

@@ -12,43 +12,49 @@ function getOrderIdFromReq(req: NextRequest) {
 export const GET = async (req: NextRequest) => {
     try {
         const orderId = getOrderIdFromReq(req);
+        if (!orderId || orderId === "undefined") {
+            return NextResponse.json({ message: "Invalid order ID" }, { status: 400 });
+        }
         await connectToDB();
         const orderDetails = await Order.findById(orderId).populate({
             path: 'products.product',
             model: Product,
         });
         if (!orderDetails) {
-            return new NextResponse(JSON.stringify({ message: "Not Found" }), { status: 404 });
+            return NextResponse.json({ message: "Order not found" }, { status: 404 });
         }
         const customer = await Customer.findOne({ clerkId: orderDetails.customerClerkId });
         return NextResponse.json({ orderDetails, customer }, { status: 200 });
     } catch (error) {
         console.log("[orderId_GET]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 
 export const POST = async (req: NextRequest) => {
     try {
         const orderId = getOrderIdFromReq(req);
+        if (!orderId || orderId === "undefined") {
+            return NextResponse.json({ message: "Invalid order ID" }, { status: 400 });
+        }
         await connectToDB();
         const order = await Order.findById(orderId);
         if (!order) {
-            return new NextResponse(JSON.stringify({ message: "Order not found" }), { status: 404 });
+            return NextResponse.json({ message: "Order not found" }, { status: 404 });
         }
         const { isSent } = await req.json();
         if (isSent == undefined) {
-            return new NextResponse("Not enough data to update the order", { status: 400 });
+            return NextResponse.json({ message: "Not enough data to update the order" }, { status: 400 });
         }
         if (isSent == order.isSent) {
-            return new NextResponse("Order is already up to date", { status: 200 });
+            return NextResponse.json({ message: "Order is already up to date" }, { status: 200 });
         }
         order.isSent = isSent;
         await order.save();
         return NextResponse.json(order, { status: 200 });
     } catch (error) {
         console.log("[orderId_POST]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

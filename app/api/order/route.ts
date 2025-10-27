@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     try {
         const { cartItems, customerInfo, orderDetails, totalAmount } = await req.json();
         if (!cartItems || !customerInfo || !orderDetails || !totalAmount) {
-            return new NextResponse("Not enough data to create order", { status: 400 });
+            return NextResponse.json({ message: "Not enough data to create order" }, { status: 400 });
         }
         const orderItems = cartItems.map((cartItem: { item: ProductType, color: string, size: string, quantity: number }) => {
             return {
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
                 variant.color === item.color && variant.size === item.size
             );
             if (!variant || variant.numberInStock < item.quantity) {
-                return new NextResponse("Not enough products in stock for ordering", { status: 400 });
+                return NextResponse.json({ message: "Not enough products in stock for ordering" }, { status: 400 });
             }
             variant.numberInStock -= item.quantity;
             // if (product.numberInStock < item.quantity) {
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(newOrder, { status: 200, headers: corsHeaders });
     } catch (err) {
         console.log("[order_POST]", err);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

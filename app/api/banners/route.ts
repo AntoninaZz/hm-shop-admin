@@ -8,17 +8,17 @@ export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 403 });
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
         await connectToDB();
 
         const { title, description, image, url } = await req.json();
         const existingBanner = await Banner.findOne({ title });
         if (existingBanner) {
-            return new NextResponse("Banner already exists", { status: 400 });
+            return NextResponse.json({ message: "Banner already exists" }, { status: 400 });
         }
         if (!title || !image || !url) {
-            return new NextResponse("Name, image and url are required", { status: 400 });
+            return NextResponse.json({ message: "Name, image and url are required" }, { status: 400 });
         }
         const newBanner = await Banner.create({
             title,
@@ -30,18 +30,18 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json(newBanner, { status: 200 });
     } catch (error) {
         console.log("[banner_POST]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 
 export const GET = async () => {
     try {
         await connectToDB();
-        const banners = await Banner.find().sort({createdAt: "desc"});
-        return NextResponse.json(banners, {status: 200});
+        const banners = await Banner.find().sort({ createdAt: "desc" });
+        return NextResponse.json(banners, { status: 200 });
     } catch (error) {
         console.log("[Banner_GET]", error);
-        return new NextResponse("Internal Server Error", {status: 500});
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 

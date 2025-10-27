@@ -23,7 +23,7 @@ export const GET = async () => {
         return NextResponse.json(orderDetails, { status: 200 });
     } catch (error) {
         console.log("[orders_GET]", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
 
