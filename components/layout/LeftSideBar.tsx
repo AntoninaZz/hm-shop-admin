@@ -13,7 +13,7 @@ const LeftSideBar = () => {
         <div className='h-screen left-0 top-0 sticky py-7 flex flex-col justify-between gap-8 bg-[var(--color-milk)] text-medium shadow-xl max-lg:hidden'>
             <div className='flex flex-col gap-5'>
                 <div className='flex justify-center'>
-                    <Link href={`${process.env.ECOMMERCE_STORE_URL}/`}>
+                    <Link href={`${process.env.NEXT_PUBLIC_ECOMMERCE_STORE_URL}/`}>
                         <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
                     </Link>
                 </div>

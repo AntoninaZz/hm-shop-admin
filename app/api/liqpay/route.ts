@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin": process.env.ECOMMERCE_STORE_URL || "*",
+    "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_ECOMMERCE_STORE_URL || "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
             currency: "UAH",
             description,
             order_id: orderId,
-            result_url: `${process.env.ECOMMERCE_STORE_URL}/successful_payment`,
+            result_url: `${process.env.NEXT_PUBLIC_ECOMMERCE_STORE_URL}/successful_payment`,
             server_url: `${process.env.ADMIN_BASE_URL}/api/liqpay/callback`,
         };
         const jsonString = JSON.stringify(data);
