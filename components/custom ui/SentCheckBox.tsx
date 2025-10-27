@@ -42,7 +42,7 @@ const SentCheckBox: React.FC<SentCheckBoxProps> = ({ id, initialData }) => {
                     {isSent ? <SquareCheck className="h-4 w-4" /> : <Square className="h-4 w-4" />}
                 </button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="bg-white">
                 <AlertDialogHeader>
                     <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                     <AlertDialogDescription>
