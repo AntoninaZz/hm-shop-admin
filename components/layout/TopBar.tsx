@@ -13,7 +13,9 @@ const TopBar = () => {
   const path = usePathname();
   return (
     <div className='sticky top-0 z-2 w-full flex justify-between items-center px-8 py-4 bg-[var(--color-milk)] lg:hidden'>
-      <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
+      <Link href={`${process.env.ECOMMERCE_STORE_URL}/`}>
+        <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
+      </Link>
       <div className='flex gap-8 max-md:hidden'>
         {navLinks.map((link, i) => (
           <Link key={i} href={link.url} className={`relative flex gap-4 hover:text-[var(--color-muted-green)] transition-all ease-in-out duration-200 ${path === link.url ? 'after:w-[140%] after:absolute after:top-16 after:left-[50%] after:-translate-x-1/2 after:border-b-2' : ''}`}>
