@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
     try {
         const segments = req.nextUrl.pathname.split('/');
-        const productId = segments[segments.length - 1];
+        const productId = segments[segments.length - 2];
         if (!productId || productId === "undefined") {
             return NextResponse.json({ message: "Invalid product ID" }, { status: 400 });
         }
