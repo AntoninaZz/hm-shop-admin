@@ -13,7 +13,7 @@ const TopBar = () => {
   const path = usePathname();
   return (
     <div className='sticky top-0 z-2 w-full flex justify-between items-center px-8 py-4 bg-[var(--color-milk)] lg:hidden'>
-      <Link href={`${process.env.NEXT_PUBLIC_ECOMMERCE_STORE_URL}/`}>
+      <Link href={`${process.env.NEXT_PUBLIC_ECOMMERCE_STORE_URL}/`} target='_blank'>
         <Image src="/logo.jpg" alt="hm-shop" width={75} height={75} />
       </Link>
       <div className='flex gap-8 max-md:hidden'>
