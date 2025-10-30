@@ -19,8 +19,14 @@ const orderSchema = new mongoose.Schema({
     shippingAddress: String,
     totalAmount: Number,
     comment: String,
-    paymentStatus: String,
-    isSent: Boolean,
+    paymentStatus: {
+        type: String,
+        default: "not paid",
+    },
+    isSent: {
+        type: Boolean,
+        default: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
