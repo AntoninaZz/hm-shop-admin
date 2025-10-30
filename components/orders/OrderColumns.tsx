@@ -25,7 +25,7 @@ export const columns: ColumnDef<OrderColumnType>[] = [
     {
         accessorKey: "paymentStatus",
         header: "Payment Status",
-        cell: ({ row }) => <span style={["success", "sandbox"].includes(row.original.paymentStatus) ? { color: 'var(--color-muted-green)' } : { color: 'var(--color-powder-pink)' }}>{row.original.paymentStatus}</span>
+        cell: ({ row }) => <span style={["success", "sandbox"].includes(row.original.paymentStatus) ? { backgroundColor: 'var(--color-muted-green)' } : { backgroundColor: 'var(--color-powder-pink)' }} className="rounded-md">{row.original.paymentStatus}</span>
     },
     {
         accessorKey: "isSent",
