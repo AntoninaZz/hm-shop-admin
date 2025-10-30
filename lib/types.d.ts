@@ -48,6 +48,18 @@ type OrderColumnType = {
     createdAt: string;
 }
 
+type OrderType = {
+    _id: string;
+    customerClerkId: string;
+    products: OrderItemType[];
+    totalAmount: number;
+    shippingAddress: string;
+    comment: string;
+    paymentStatus: string;
+    isSent: boolean;
+    createdAt: Date;
+};
+
 type OrderItemType = {
     product: ProductType;
     color: string;

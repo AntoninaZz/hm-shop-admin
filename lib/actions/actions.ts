@@ -5,10 +5,11 @@ import { connectToDB } from "../mongoDB"
 
 export const getTotalSales = async () => {
     await connectToDB();
-    const orders = await Order.find().populate({ path: "products.product", model: Product });
+    const orders = (await Order.find().populate({ path: "products.product", model: Product }));
+    const paidOrders = orders.filter((order: OrderType) => ['success', 'sandbox'].includes(order.paymentStatus));
     const totalOrders = orders.length;
-    const totalRevenue = Math.round(orders.reduce((acc, order) => acc + order.totalAmount, 0) * 100) / 100;
-    const totalExpense = orders.reduce((acc, order) => acc + order.products.reduce((acc: number, item: OrderItemType) => acc + item.product.expense * item.quantity, 0), 0);
+    const totalRevenue = Math.round(paidOrders.reduce((acc, order) => acc + order.totalAmount, 0) * 100) / 100;
+    const totalExpense = paidOrders.reduce((acc, order) => acc + order.products.reduce((acc: number, item: OrderItemType) => acc + item.product.expense * item.quantity, 0), 0);
     const totalProfit = Math.round((totalRevenue - totalExpense) * 100) / 100;
     return { totalOrders, totalRevenue, totalProfit };
 }
@@ -23,7 +24,8 @@ export const getTotalCustomers = async () => {
 export const getSalesPerMonth = async () => {
     await connectToDB();
     const orders = await Order.find();
-    const salesPerMonth = orders.reduce((acc, order) => {
+    const paidOrders = orders.filter((order: OrderType) => ['success', 'sandbox'].includes(order.paymentStatus));
+    const salesPerMonth = paidOrders.reduce((acc, order) => {
         const monthIndex = new Date(order.createdAt).getMonth();
         acc[monthIndex] = (acc[monthIndex] || 0) + order.totalAmount;
         return acc;
