@@ -1,3 +1,4 @@
+import Category from "@/lib/models/Category";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,7 +20,7 @@ export const GET = async (req: NextRequest) => {
                 { tags: { $in: product.tags } },
             ],
             _id: { $ne: product._id }
-        });
+        }).populate({ path: "category", model: Category });
         if (!relatedProducts) {
             return NextResponse.json({ message: "No related products found" }, { status: 404 });
         }
