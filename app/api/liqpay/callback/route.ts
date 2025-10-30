@@ -3,6 +3,16 @@ import crypto from "crypto";
 import { connectToDB } from "@/lib/mongoDB";
 import Order from "@/lib/models/Order";
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { status: 200, headers: corsHeaders });
+}
+
 export async function POST(req: Request) {
     try {
         const { data, signature } = await req.json();
@@ -24,7 +34,7 @@ export async function POST(req: Request) {
         await connectToDB();
         const order = await Order.findById(paymentInfo.order_id);
         if (order.paymentStatus === 'success') {
-            return NextResponse.json({ received: true }, { status: 200 });
+            return NextResponse.json({ received: true }, { status: 200, headers: corsHeaders });
         }
         await Order.findByIdAndUpdate(paymentInfo.order_id, { paymentStatus: paymentInfo.status });
         // Якщо статус успішний — можна виконати логіку відправлення замовлення
@@ -34,7 +44,7 @@ export async function POST(req: Request) {
         } else {
             console.log(`Order ${paymentInfo.order_id} has status: ${paymentInfo.status}`);
         }
-        return NextResponse.json({ received: true }, { status: 200 });
+        return NextResponse.json({ received: true }, { status: 200, headers: corsHeaders });
     } catch (error) {
         console.error("[LiqPay_callback_POST]", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
