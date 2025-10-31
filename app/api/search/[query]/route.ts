@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
+import Category from "@/lib/models/Category";
 
 export const GET = async (req: NextRequest) => {
     try {
@@ -12,8 +13,7 @@ export const GET = async (req: NextRequest) => {
                 { name: { $regex: query, $options: "i" } },
                 { tags: { $in: [new RegExp(query, "i")] } },
             ],
-        });
-        console.log(searchedProducts)
+        }).populate({ path: "category", model: Category });
         return NextResponse.json(searchedProducts, { status: 200 });
     } catch (error) {
         console.log("[search_GET]", error);
