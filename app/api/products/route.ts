@@ -4,6 +4,16 @@ import { connectToDB } from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 import Category from "@/lib/models/Category";
 
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { status: 200, headers: corsHeaders });
+}
+
 export const POST = async (req: NextRequest) => {
     try {
         const { userId } = await auth();
@@ -51,10 +61,10 @@ export const GET = async () => {
     try {
         await connectToDB();
         const products = await Product.find().sort({ createdAt: "desc" }).populate({ path: "category", model: Category });
-        return NextResponse.json(products, { status: 200 });
+        return NextResponse.json(products, { status: 200, headers: corsHeaders });
     } catch (error) {
         console.log("[Products_GET]", error);
-        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500, headers: corsHeaders });
     }
 }
 

@@ -1,8 +1,17 @@
 import { connectToDB } from "@/lib/mongoDB";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-
 import Category from "@/lib/models/Category";
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { status: 200, headers: corsHeaders });
+}
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -37,10 +46,10 @@ export const GET = async () => {
     try {
         await connectToDB();
         const categories = await Category.find().sort({ createdAt: "desc" });
-        return NextResponse.json(categories, { status: 200 });
+        return NextResponse.json(categories, { status: 200, headers: corsHeaders });
     } catch (error) {
         console.log("[Category_GET]", error);
-        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500, headers: corsHeaders });
     }
 }
 
