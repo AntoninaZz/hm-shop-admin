@@ -13,7 +13,7 @@
 
 **Live Demo:** [https://hm-shop-admin.vercel.app](https://hm-shop-admin.vercel.app)
 
-![HM-Shop Admin Dashboard Preview](https://raw.githubusercontent.com/antoninazz/hm-shop-admin/main/public/demo.jpg)
+![HM-Shop Admin Dashboard Preview](https://github.com/AntoninaZz/hm-shop-admin/blob/c192aa957b444e0703bf9078d19d7c2a3584ab0c/public/demo.jpg)
 
 ---
 
