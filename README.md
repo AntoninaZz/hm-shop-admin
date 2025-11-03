@@ -15,8 +15,6 @@
 
 ![HM-Shop Admin Dashboard Preview](https://github.com/AntoninaZz/hm-shop-admin/blob/c192aa957b444e0703bf9078d19d7c2a3584ab0c/public/demo.jpg)
 
----
-
 ## Features
 
 - **Authentication & Authorization:** Secure user authentication via **Clerk**.
