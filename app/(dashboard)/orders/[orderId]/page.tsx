@@ -19,7 +19,7 @@ const OrderDetails = async ({ params }: { params: Promise<{ orderId: string }> }
       <div className="flex w-full gap-3 flex-col sm:flex-row">
         <div className="flex flex-col gap-5 w-full sm:w-3/5">
           <p className="text-md"><span className="font-semibold">Delivery address:</span> {orderDetails.shippingAddress}</p>
-          <p className="text-md"><span className="font-semibold">Total amount:</span> {orderDetails.totalAmount}₴</p>
+          <p className="text-md"><span className="font-semibold">Total amount:</span> {orderDetails.totalAmount.toFixed(2)}₴</p>
           <p className="text-md"><span className="font-semibold">Comment:</span> {orderDetails.comment.length > 0 ? orderDetails.comment : '-'}</p>
           <div className="flex gap-25">
             <p className="text-md"><span className="font-semibold">Payment status:</span> {orderDetails.paymentStatus ? orderDetails.paymentStatus : 'not paid'}</p>
