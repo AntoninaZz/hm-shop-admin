@@ -10,13 +10,14 @@ const OrderDetails = async ({ params }: { params: Promise<{ orderId: string }> }
   const { orderDetails, customer } = await res.json();
   return (
     <div className="p-10">
-      <div className="w-full flex justify-between">
-        <p className="text-2xl font-semibold">Order № {orderDetails._id}</p>
-        <p className="text-md">{format(orderDetails.createdAt, "eee dd.MM.yyy HH:mm")}</p>
+      <div className="w-full flex justify-between flex-col sm:flex-row">
+        <p className="text-md sm:hidden">{format(orderDetails.createdAt, "eee dd.MM.yyy HH:mm")}</p>
+        <p className="text-xl sm:text-2xl font-semibold">Order № {orderDetails._id}</p>
+        <p className="text-md max-sm:hidden">{format(orderDetails.createdAt, "eee dd.MM.yyy HH:mm")}</p>
       </div>
       <Separator className="mt-4 mb-7 bg-[var(--color-muted-green)]" />
-      <div className="flex w-full gap-3">
-        <div className="flex flex-col gap-5 w-3/5">
+      <div className="flex w-full gap-3 flex-col sm:flex-row">
+        <div className="flex flex-col gap-5 w-full sm:w-3/5">
           <p className="text-md"><span className="font-semibold">Delivery address:</span> {orderDetails.shippingAddress}</p>
           <p className="text-md"><span className="font-semibold">Total amount:</span> {orderDetails.totalAmount}₴</p>
           <p className="text-md"><span className="font-semibold">Comment:</span> {orderDetails.comment.length > 0 ? orderDetails.comment : '-'}</p>
@@ -28,7 +29,7 @@ const OrderDetails = async ({ params }: { params: Promise<{ orderId: string }> }
             </p>
           </div>
         </div>
-        <div className="flex flex-col gap-5 w-2/5">
+        <div className="flex flex-col gap-5 w-full sm:w-2/5">
           <p className="text-md"><span className="font-semibold">Name:</span> {customer.name}</p>
           <p className="text-md"><span className="font-semibold">phone:</span> {customer.phone}</p>
           <p className="text-md"><span className="font-semibold">email:</span> {customer.email}</p>
